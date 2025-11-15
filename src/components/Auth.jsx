@@ -11,13 +11,10 @@ export default function Auth({ onAuthenticated, backendUrl }) {
   const login = async () => {
     setLoading(true); setError("");
     try {
-      const formData = new URLSearchParams();
-      formData.append("username", email);
-      formData.append("password", password);
       const res = await fetch(`${backendUrl}/auth/login`, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString(),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
       if (!res.ok) throw new Error(await res.text());
       const data = await res.json();
@@ -69,9 +66,13 @@ export default function Auth({ onAuthenticated, backendUrl }) {
         </button>
         <p className="text-center text-sm text-slate-600">
           {mode === "login" ? (
-            <>No account? <button className="text-blue-600" onClick={()=>setMode("signup")}>Sign up</button></>
+            <>No account? <button className="text-blue-600" onClick={()=>setMode("signup")}>
+              Sign up
+            </button></>
           ) : (
-            <>Have an account? <button className="text-blue-600" onClick={()=>setMode("login")}>Login</button></>
+            <>Have an account? <button className="text-blue-600" onClick={()=>setMode("login")}>
+              Login
+            </button></>
           )}
         </p>
       </div>
